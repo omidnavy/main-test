@@ -1,0 +1,23 @@
+{
+  "name": "express-4-ecmascript-6-boilerplate",
+  "version": "1.0.0",
+  "description": "A basic boilerplate of express version 4 with ES6 setup along with babel and gulp",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./app/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Shailendra Singh <shailendra.singh.knp@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "compression": "latest",
+    "ejs": "latest",
+    "express": "^4.14.0",
+    "express-session": "latest",
+    "method-override": "latest",
+    "morgan": "^1.7.0",
+    "multer": "^1.2.1",
+    "mysql": "^2.13.0"
+  }
+}
