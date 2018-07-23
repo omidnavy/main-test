@@ -13,7 +13,7 @@ module.exports = class IndexController extends BaseController {
     }
 
     getHome(req, res) {
-        this.renderView(res,'./views/index')
+        // this.renderView(res,'./views/index')
     }
 
 

@@ -1,7 +1,9 @@
 const express = require('express');
 const path = require('path');
-const session = require('express-session');
 const compression = require('compression');
+const session = require('express-session');
+const RedisStore = require('connect-redis')(session);
+const salt = '$om3T!ngStR0nG';
 
 module.exports = class Middleware {
     constructor(app, express) {
@@ -22,10 +24,11 @@ module.exports = class Middleware {
 
 
         this.app.use(session({
-            secret: 'sUperS3cr3t',
+            store: new RedisStore({host:'192.168.0.7'}),
+            secret: salt,
             cookie: {maxAge: 2628000000},
             saveUninitialized: true,
-            resave: true,
+            resave: false,
         }));
 
         this.app.set('view engine', 'ejs');

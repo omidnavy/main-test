@@ -3,6 +3,8 @@ const http = require('http');
 const RouteMapper = require('./core/RouteMapper');
 const Middleware = require('./core/Middleware');
 const path = require('path');
+require('./helpers/helpers.js');
+
 let app = express();
 let server = http.createServer(app);
 
@@ -21,10 +23,7 @@ routes.mapControllers(app);
  * Default Routes
  ********************* */
 app.use((req, res, next) => {
-    res.status(404);
-    res.render(path.join(__dirname,'core/views/404'), {
-        title: 'Page introuvable !',
-    });
+    res.status(404).send('Not found')
 });
 
 app.use((req, res, next) => {
