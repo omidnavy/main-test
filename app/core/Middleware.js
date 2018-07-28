@@ -4,6 +4,7 @@ const compression = require('compression');
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const salt = '$om3T!ngStR0nG';
+const RouteDictionary = require('./RouteDictionary');
 
 module.exports = class Middleware {
     constructor(app, express) {
@@ -31,6 +32,23 @@ module.exports = class Middleware {
             resave: false,
         }));
 
+        this.app.use((req,res,next)=>{
+            let role = 0;
+            if (req.session.isAuthenticate) {
+                role = req.session.userInfo.Role;
+            }
+            let placeInDictionary = `${req.url}/${req.method}`.replace('/','').split('/');
+            let privilage = RouteDictionary ;
+            placeInDictionary.forEach((e)=>{
+                privilage=privilage[e];
+            });
+            if (privilage === '*' || privilage.includes(role)){
+                next();
+            }
+            else res.sendStatus(403)
+
+
+        })
         this.app.set('view engine', 'ejs');
         this.app.use(this.express.static(path.join(__dirname, '../assets')));
     }

@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package Users;
+
+service Users {
+    rpc CheckLogin (CheckLoginRequest) returns (CheckLoginReply) {
+    };
+    rpc Register (RegisterRequest) returns (RegisterReply) {
+    };
+}
+
+/*Check Login*/
+message CheckLoginRequest {
+    string username = 1;
+    string password = 2;
+}
+
+message CheckLoginReply {
+    bool status = 1;
+    User user = 2;
+
+    message User {
+        int32 ID = 1;
+        int32 Role = 2;
+        int32 RoleID = 3;
+        string Firstname = 4;
+        string Lastname = 5;
+        string Email = 6;
+        string Phone = 7;
+    }
+}
+
+/*Register*/
+message RegisterRequest {
+    string Username = 1;
+    string Email = 2;
+    string Phone = 3;
+    string Password = 4;
+    string Firstname = 5;
+    string Lastname = 6;
+    int32 Role = 8;
+    int32 RoleID = 9;
+}
+
+
+message RegisterReply {
+    bool status = 1;
+    string msg = 2;
+}

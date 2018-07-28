@@ -10,24 +10,30 @@ module.exports = class AuthController extends BaseController {
     }
 
     registerRoutes() {
+        // this.router.use(this.isAuthorized.bind(this))
         this.router.post('/login', this.login.bind(this));
-        this.router.delete('/login',this.logout.bind(this))
+        this.router.delete('/login', this.logout.bind(this))
     }
 
-    async login(req,res){
-        let rs = await this.model.login(req.body.username,req.body.pass);
-        if (rs) {
-            req.session.isAuthenticate = true;
-            req.session.userInfo = rs;
-            res.sendStatus(200)
+    async login(req, res) {
+        try {
+            let rs = await this.model.login(req.body.username, req.body.pass);
+            if (rs.status) {
+                req.session.isAuthenticate = true;
+                req.session.userInfo = rs.user;
+                return res.sendStatus(200)
+            }
+            else return res.sendStatus(403)
         }
-        else res.sendStatus(403)
+        catch (e) {
+            logger('error',e);
+            return res.sendStatus(403)
+        }
+
     }
 
-
-    async logout(req,res){
-        console.log(req.session.userInfo );
-        req.session.destroy(()=>{
+    async logout(req, res) {
+        return req.session.destroy(() => {
             res.sendStatus(200)
         })
     }

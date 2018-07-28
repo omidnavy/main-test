@@ -8,8 +8,6 @@ const config = require('./config/database').development;
 const BaseModel = require('./BaseModel');
 
 const createPool = () => {
-    console.log(config);
-    console.log({...config, ...{connectionLimit: 10, supportBigNumbers: true}});
     let pool = mysql.createPool({...config, ...{connectionLimit: 10, supportBigNumbers: true}});
     if (pool) {
         pool.on('error', (e) => {

@@ -1,0 +1,13 @@
+{
+  "auth": {
+    "login": {
+      "POST": "*",
+      "DELETE": [ 1, 2, 3 ]
+    }
+  },
+  "client": {
+    "register": {
+      "POST": "*"
+    }
+  }
+}

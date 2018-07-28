@@ -8,4 +8,5 @@ module.exports = class BaseController {
         let viewPath = this.basePath + viewName;
         response.render(path.join( __dirname, '../components/' + viewPath ), data);
     }
+
 };
