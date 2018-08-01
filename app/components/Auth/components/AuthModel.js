@@ -1,5 +1,5 @@
-const BaseModel = require('../../core/BaseDBModel');
-const UsersGateway = require('../../gateway/Users/Users');
+const BaseModel = require('../../../core/BaseModel');
+const UsersGateway = require('../../../gateway/Users/Users');
 const usersGateway = new UsersGateway;
 
 module.exports = class AuthModel extends BaseModel {

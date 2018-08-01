@@ -14,9 +14,7 @@ module.exports = class Middleware {
     }
 
     useMiddleware() {
-        if (global.PROD_ENV) {
-            this.app.use(compression());
-        }
+        if (global.PROD_ENV) this.app.use(compression());
 
         this.app.use(express.json());
         this.app.use(express.urlencoded({
@@ -25,30 +23,29 @@ module.exports = class Middleware {
 
 
         this.app.use(session({
-            store: new RedisStore({host:'192.168.0.7'}),
+            store: new RedisStore({host: '192.168.0.7'}),
             secret: salt,
             cookie: {maxAge: 2628000000},
             saveUninitialized: true,
             resave: false,
         }));
 
-        this.app.use((req,res,next)=>{
+        this.app.use((req, res, next) => {
             let role = 0;
             if (req.session.isAuthenticate) {
                 role = req.session.userInfo.Role;
             }
-            let placeInDictionary = `${req.url}/${req.method}`.replace('/','').split('/');
-            let privilage = RouteDictionary ;
-            placeInDictionary.forEach((e)=>{
-                privilage=privilage[e];
+            let placeInDictionary = `${req.url}/${req.method}`.replace('/', '').split('/');
+            let privilage = RouteDictionary;
+            let error = false;
+            placeInDictionary.forEach((e) => {
+                if (privilage[e]) privilage = privilage[e];
+                else error = true;
             });
-            if (privilage === '*' || privilage.includes(role)){
-                next();
-            }
+            if (error) return res.sendStatus(404);
+            if (privilage === '*' || privilage.includes(role)) next();
             else res.sendStatus(403)
-
-
-        })
+        });
         this.app.set('view engine', 'ejs');
         this.app.use(this.express.static(path.join(__dirname, '../assets')));
     }

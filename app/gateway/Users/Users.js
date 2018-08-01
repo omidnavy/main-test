@@ -17,7 +17,7 @@ const UsersGRPC = protoDescriptor.Users;
 
 module.exports = class UsersGateway {
     constructor() {
-        this.grpcClient = new UsersGRPC.Users('localhost:50051',grpc.credentials.createInsecure());
+        this.grpcClient = new UsersGRPC.Users('localhost:50052',grpc.credentials.createInsecure());
     }
 };
 

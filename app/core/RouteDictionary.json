@@ -2,12 +2,20 @@
   "auth": {
     "login": {
       "POST": "*",
-      "DELETE": [ 1, 2, 3 ]
+      "DELETE": [ "client", 2, 3 ]
     }
   },
-  "client": {
-    "register": {
-      "POST": "*"
+  "user":{
+    "client": {
+      "":{
+        "PATCH" : ["client"]
+      },
+      "register": {
+        "POST": "*"
+      }
+    },
+    "change-password" : {
+      "POST": ["client"]
     }
   }
 }

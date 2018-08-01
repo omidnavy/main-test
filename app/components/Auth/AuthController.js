@@ -1,5 +1,5 @@
 const BaseController = require('../../core/BaseController');
-const Model = require('./AuthModel');
+const Model = require('./components/AuthModel');
 module.exports = class AuthController extends BaseController {
 
     constructor(router, basePath) {
@@ -17,7 +17,7 @@ module.exports = class AuthController extends BaseController {
 
     async login(req, res) {
         try {
-            let rs = await this.model.login(req.body.username, req.body.pass);
+            let rs = await this.model.login(req.body.username, req.body.password);
             if (rs.status) {
                 req.session.isAuthenticate = true;
                 req.session.userInfo = rs.user;
