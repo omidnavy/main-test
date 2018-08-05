@@ -10,7 +10,6 @@ module.exports = class AuthController extends BaseController {
     }
 
     registerRoutes() {
-        // this.router.use(this.isAuthorized.bind(this))
         this.router.post('/login', this.login.bind(this));
         this.router.delete('/login', this.logout.bind(this))
     }

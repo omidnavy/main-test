@@ -3,23 +3,26 @@ syntax = "proto3";
 package Users;
 
 service Users {
-    rpc CheckLogin (CheckLoginRequest) returns (CheckLoginReply) {
+    rpc CheckLogin (CheckLoginRequestMessage) returns (CheckLoginReplyMessage) {
     };
-    rpc RegisterClient (RegisterClientRequest) returns (RegisterClientReply) {
+    rpc RegisterClient (RegisterClientRequestMessage) returns (RegisterClientReplyMessage) {
     };
-    rpc EditClient (EditClientRequest) returns (EditClientReply) {
+    rpc EditClient (EditClientRequestMessage) returns (EditClientReplyMessage) {
     };
-    rpc ChangePassword (ChangePasswordRequest) returns (ChangePasswordReply) {
+    rpc ChangePassword (ChangePasswordRequestMessage) returns (ChangePasswordReplyMessage) {
+    };
+    rpc ForgetPasswordRequest (FPRRequestMessage) returns (FPRReplyMessage) {
+    };
+    rpc ForgetPasswordChange (FPCRequestMessage) returns (FPCReplyMessage) {
     };
 }
 
 /*Check Login*/
-message CheckLoginRequest {
+message CheckLoginRequestMessage {
     string username = 1;
     string password = 2;
 }
-
-message CheckLoginReply {
+message CheckLoginReplyMessage {
     bool status = 1;
     User user = 2;
 
@@ -34,41 +37,57 @@ message CheckLoginReply {
 }
 
 /*RegisterClient*/
-message RegisterClientRequest {
+message RegisterClientRequestMessage {
     string Email = 2;
     string Phone = 3;
     string Password = 4;
     string Firstname = 5;
     string Lastname = 6;
 }
-
-
-message RegisterClientReply {
+message RegisterClientReplyMessage {
     bool status = 1;
     string msg = 2;
 }
 
 /*EditClient*/
-message EditClientRequest {
+message EditClientRequestMessage {
     string _id = 1;
     string user = 2;
 }
-
-
-message EditClientReply {
+message EditClientReplyMessage {
     bool status = 1;
     string msg = 2;
 }
 
 /*ChangePassword*/
-message ChangePasswordRequest {
+message ChangePasswordRequestMessage {
     string _id = 1;
     string oldPassword = 2;
     string newPassword = 3;
 }
+message ChangePasswordReplyMessage {
+    bool status = 1;
+    string msg = 2;
+}
 
-
-message ChangePasswordReply {
+/*ForgetPasswordRequest*/
+message FPRRequestMessage {
+    string mode = 1;
+    string value = 2;
+}
+message FPRReplyMessage {
+    bool status = 1;
+    string msg = 2;
+    string phone = 3;
+    string id = 4;
+}
+/*ForgetPasswordChange*/
+message FPCRequestMessage {
+    string id = 1;
+    string token = 2;
+    string password = 3;
+}
+message FPCReplyMessage {
     bool status = 1;
     string msg = 2;
 }

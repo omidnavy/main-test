@@ -14,10 +14,11 @@ const protoDescriptor = grpc.loadPackageDefinition(packageDefinition);
 const UsersGRPC = protoDescriptor.Users;
 
 // const client = new grpc.Client('localhost:50051',grpc.credentials.createInsecure());
+let client = new UsersGRPC.Users('localhost:50052',grpc.credentials.createInsecure());
 
 module.exports = class UsersGateway {
     constructor() {
-        this.grpcClient = new UsersGRPC.Users('localhost:50052',grpc.credentials.createInsecure());
+        this.grpcClient = client
     }
 };
 

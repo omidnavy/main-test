@@ -11,11 +11,20 @@
         "PATCH" : ["client"]
       },
       "register": {
-        "POST": "*"
+        "POST": "*",
+        "PATCH" : ["client"]
       }
     },
     "change-password" : {
       "POST": ["client"]
+    },
+    "forget-password" : {
+      "request":{
+        "POST": "*"
+      },
+      "change":{
+        "POST": "*"
+      }
     }
   }
 }
