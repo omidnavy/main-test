@@ -5,9 +5,9 @@ package Users;
 service Users {
     rpc CheckLogin (CheckLoginRequestMessage) returns (CheckLoginReplyMessage) {
     };
-    rpc RegisterClient (RegisterClientRequestMessage) returns (RegisterClientReplyMessage) {
+    rpc Register (RegisterRequestMessage) returns (RegisterReplyMessage) {
     };
-    rpc EditClient (EditClientRequestMessage) returns (EditClientReplyMessage) {
+    rpc Edit (EditRequestMessage) returns (EditReplyMessage) {
     };
     rpc ChangePassword (ChangePasswordRequestMessage) returns (ChangePasswordReplyMessage) {
     };
@@ -33,28 +33,27 @@ message CheckLoginReplyMessage {
         string Lastname = 5;
         string Email = 6;
         string Phone = 7;
+        int32 Status = 8;
     }
 }
 
-/*RegisterClient*/
-message RegisterClientRequestMessage {
-    string Email = 2;
-    string Phone = 3;
-    string Password = 4;
-    string Firstname = 5;
-    string Lastname = 6;
+/*Register*/
+message RegisterRequestMessage {
+    string type = 1;
+    string user = 2;
 }
-message RegisterClientReplyMessage {
+message RegisterReplyMessage {
     bool status = 1;
     string msg = 2;
 }
 
-/*EditClient*/
-message EditClientRequestMessage {
-    string _id = 1;
-    string user = 2;
+/*Edit*/
+message EditRequestMessage {
+    string type = 1;
+    string _id = 2;
+    string user = 3;
 }
-message EditClientReplyMessage {
+message EditReplyMessage {
     bool status = 1;
     string msg = 2;
 }

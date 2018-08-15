@@ -2,29 +2,35 @@
   "auth": {
     "login": {
       "POST": "*",
-      "DELETE": [ "client", 2, 3 ]
+      "DELETE": [ "client","translator" ]
     }
   },
   "user":{
+    "*" : ["client","translator"],
     "client": {
       "":{
-        "PATCH" : ["client"]
+        "PATCH" : ["client","administrator"]
       },
       "register": {
         "POST": "*",
-        "PATCH" : ["client"]
+        "PATCH" : ["client","administrator"]
+      }
+    },
+    "translator": {
+      "":{
+        "PATCH" : ["translator","administrator"]
+      },
+      "register": {
+        "POST": "*",
+        "PATCH" : ["translator","administrator"]
       }
     },
     "change-password" : {
-      "POST": ["client"]
+      "POST": ["client","translator"]
     },
     "forget-password" : {
-      "request":{
+        "GET": "*",
         "POST": "*"
-      },
-      "change":{
-        "POST": "*"
-      }
     }
   }
 }

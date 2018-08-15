@@ -1,5 +1,19 @@
 {
-  "forget-password": {
-    "sms"   : " توکن موقت شما جهت تغییر رمز: "
+  "translator": {
+    "register-success": {
+      "sms": " عزیز به کافه ترجمه خوش آمدید ",
+      "email": "یه پیغام زیبا"
+    }
+  },
+  "client": {
+    "register-success": {
+      "sms": " عزیز به کافه ترجمه خوش آمدید ",
+      "email": "یه پیغام زیبا"
+    }
+  },
+  "common": {
+    "forget-password": {
+      "sms": " توکن موقت شما جهت تغییر رمز: "
+    }
   }
 }
