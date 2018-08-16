@@ -17,6 +17,16 @@ module.exports = class UserController extends BaseController {
         this.router.post('/change-password', this.changePassword.bind(this));
         this.router.get('/forget-password', this.requestForgetPassword.bind(this));
         this.router.post('/forget-password', this.changeForgetPassword.bind(this));
+        this.router.get('/:id', this.getInfo.bind(this));
+    }
+
+    async getInfo(req, res) {
+        let response = await this.user.getInfo(req.params.id);
+        if (response.status) return res.send(response.data);
+        else{
+            if (response.error === 'user not found') return res.status(404).send(response.error);
+            else res.status(400).send(response.error)
+        }
     }
 
     async changeForgetPassword(req, res) {
@@ -63,38 +73,13 @@ module.exports = class UserController extends BaseController {
     async register(req, res) {
         if (!req.body.Phone || !this.isValidPhone(req.body.Phone)) return res.status(400).send('phone');
         if (!req.body.Password || !this.isValidPassword(req.body.Password)) return res.status(400).send('password');
-        let user = {
-            Email: req.body.Email,
-            Phone: req.body.Phone,
-            Password: req.body.Password,
-            Firstname: req.body.Firstname,
-            Lastname: req.body.Lastname
-        };
 
-        //User Types
-        if (req.params.type === 'client') {
-        }
-        else if (req.params.type === 'translator') {
-            user = {
-                ...user, ...{
-                    Telephone: req.body.Telephone,
-                    Address: req.body.Address,
-                    Education: req.body.Education,
-                    Experience: req.body.Experience,
-                    Sync: req.body.Sync,
-                    Languages: req.body.Languages,
-                    Fields: req.body.Fields,
-                    Other: req.body.Other
-                }
-            }
-        }
-
-        let rs = await this.user.register(req.params.type, user);
+        let rs = await this.user.register(req.params.type, req.body);
 
         if (rs.status) {
             Sender.SendSMS({
-                to: [user.Phone],
-                text: `${user.Firstname} ${Messages[req.params.type]["register-success"]["sms"]}`
+                to: [req.body.Phone],
+                text: `${req.body.Firstname} ${Messages[req.params.type]["register-success"]["sms"]}`
             });
             return res.sendStatus(201);
         }

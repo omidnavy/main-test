@@ -6,7 +6,7 @@
     }
   },
   "user":{
-    "*" : ["client","translator"],
+    "*" : ["administrator"],
     "client": {
       "":{
         "PATCH" : ["client","administrator"]

@@ -15,7 +15,20 @@ service Users {
     };
     rpc ForgetPasswordChange (FPCRequestMessage) returns (FPCReplyMessage) {
     };
+    rpc Info (InfoRequestMessage) returns (InfoReplyMessage) {
+    };
 }
+
+
+/*User Info*/
+message InfoRequestMessage {
+    string id = 1;
+}
+message InfoReplyMessage {
+    bool status = 1;
+    string msg = 2;
+}
+
 
 /*Check Login*/
 message CheckLoginRequestMessage {

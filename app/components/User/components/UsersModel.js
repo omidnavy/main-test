@@ -13,6 +13,21 @@ module.exports = class ClientModel extends BaseModel {
         this.usersGateway = usersGateway.grpcClient;
     }
 
+    getInfo(id) {
+        return new Promise((resolve, reject) => {
+            this.usersGateway.info({id}, {deadline: new Date().setSeconds(new Date().getSeconds() + grpcTimeout)}, (e, r) => {
+                if (e) {
+                    logger('error', e);
+                    return resolve({status: false, error: e})
+                }
+                else if (r) {
+                    if (r.status) return resolve({status: true, data: JSON.parse(r.msg)});
+                    else return resolve({status: false, error: r.msg});
+                }
+            })
+        })
+    }
+
     /**
      *
      * @param type
