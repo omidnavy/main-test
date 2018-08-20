@@ -13,6 +13,20 @@ module.exports = class ClientModel extends BaseModel {
         this.usersGateway = usersGateway.grpcClient;
     }
 
+    remove(id) {
+        return new Promise((resolve, reject) => {
+            this.usersGateway.remove({id}, {deadline: new Date().setSeconds(new Date().getSeconds() + grpcTimeout)}, (e, r) => {
+                if (e) {
+                    logger('error', e);
+                    return resolve({status: false, error: e})
+                }
+                else if (r) {
+                    if (r.status) return resolve({status: true});
+                    else return resolve({status: false, error: 'can not remove this user'});
+                }
+            })
+        })
+    }
     getInfo(id) {
         return new Promise((resolve, reject) => {
             this.usersGateway.info({id}, {deadline: new Date().setSeconds(new Date().getSeconds() + grpcTimeout)}, (e, r) => {
@@ -47,9 +61,9 @@ module.exports = class ClientModel extends BaseModel {
                 }
                 else if (r) {
                     if (r.status) {
-                        if (type === 'client') {
-                            fs.mkdirSync(uploadPath + '/' + r.msg);
-                        }
+                        // if (type === 'client') {
+                        //     fs.mkdirSync(uploadPath + '/' + r.msg);
+                        // }
                         return resolve({status: true})
                     }
                     else return resolve({status: false, error: r.msg});

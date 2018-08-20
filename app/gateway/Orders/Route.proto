@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package Orders;
+
+service Orders {
+    rpc NewOrder (NewOrderRequest) returns (NewOrderResponse) {
+    };
+    rpc DeleteOrder (DeleteOrderRequest) returns (DeleteOrderResponse) {
+    };
+    rpc Info (InfoRequestMessage) returns (InfoReplyMessage) {
+    };
+}
+
+/*User Info*/
+message DeleteOrderRequest {
+    string user = 1;
+    string order = 2;
+}
+message DeleteOrderResponse {
+    bool status = 1;
+}
+/*User Info*/
+message NewOrderRequest {
+    string user = 1;
+    string type = 2;
+    string order = 3;
+}
+message NewOrderResponse {
+    bool status = 1;
+    string msg = 2;
+}
+/*User Info*/
+message InfoRequestMessage {
+    string id = 1;
+}
+message InfoReplyMessage {
+    bool status = 1;
+    string msg = 2;
+}

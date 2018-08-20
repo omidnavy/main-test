@@ -17,13 +17,35 @@ module.exports = class UserController extends BaseController {
         this.router.post('/change-password', this.changePassword.bind(this));
         this.router.get('/forget-password', this.requestForgetPassword.bind(this));
         this.router.post('/forget-password', this.changeForgetPassword.bind(this));
+        this.router.delete('/:id', this.remove.bind(this));
+        this.router.patch('/:id', this.activation.bind(this));
         this.router.get('/:id', this.getInfo.bind(this));
     }
+
+    async activation(req, res) {
+        // if (req.session.userInfo.role === 'administrator' || ) to do tomorrow : check if user is same as requested
+        let response = await this.user.remove(req.params.id);
+        if (response.status) return res.send('user deleted successfully');
+        else {
+            if (response.error === 'user not found') return res.status(404).send(response.error);
+            else res.status(400).send(response.error)
+        }
+    }
+
+    async remove(req, res) {
+        let response = await this.user.remove(req.params.id);
+        if (response.status) return res.send('user deleted successfully');
+        else {
+            if (response.error === 'user not found') return res.status(404).send(response.error);
+            else res.status(400).send(response.error)
+        }
+    }
+
 
     async getInfo(req, res) {
         let response = await this.user.getInfo(req.params.id);
         if (response.status) return res.send(response.data);
-        else{
+        else {
             if (response.error === 'user not found') return res.status(404).send(response.error);
             else res.status(400).send(response.error)
         }

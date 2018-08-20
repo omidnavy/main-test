@@ -3,6 +3,9 @@ syntax = "proto3";
 package Users;
 
 service Users {
+
+    rpc Remove (RemoveRequest) returns (RemoveReply) {
+    };
     rpc CheckLogin (CheckLoginRequestMessage) returns (CheckLoginReplyMessage) {
     };
     rpc Register (RegisterRequestMessage) returns (RegisterReplyMessage) {
@@ -19,6 +22,14 @@ service Users {
     };
 }
 
+
+/*Remove User*/
+message RemoveRequest {
+    string id = 1;
+}
+message RemoveReply {
+    bool status = 1;
+}
 
 /*User Info*/
 message InfoRequestMessage {
