@@ -59,7 +59,7 @@ module.exports = class OrderController extends BaseController {
                         to: [req.session.userInfo.Phone],
                         text: `${req.session.userInfo.Firstname} ${Messages['client']["submit-success"]["sms"]}`
                     });
-                    // Send Message to Operator also
+                    // Send Message to Operator also\
                     // Sender.SendSMS({
                     //     to: [req.session.userInfo.Phone],
                     //     text: `${req.session.userInfo.Firstname} ${Messages['client']["submit-success"]["sms"]}`

@@ -33,8 +33,10 @@ module.exports = class Middleware {
         this.app.use((req, res, next) => {
             let role = 0;
             if (req.session.isAuthenticate) {
-                if (req.session.userInfo.Status === 0) return res.status(403).send('Your account is not active');
+                if (req.session.userInfo.Status === 0) return res.redirect('/active');
+                if (req.session.userInfo.Status > 1) return res.status(401).send('You don\'t have access');
                 role = req.session.userInfo.Role;
+                console.log(req.session.userInfo)
             }
             let placeInDictionary = `${req.path}/${req.method}`.replace('/', '').split('/');
             let privilege = RouteDictionary;

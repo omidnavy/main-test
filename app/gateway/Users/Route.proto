@@ -4,6 +4,8 @@ package Users;
 
 service Users {
 
+    rpc Activate (ActivateRequest) returns (ActivateReply) {
+    };
     rpc Remove (RemoveRequest) returns (RemoveReply) {
     };
     rpc CheckLogin (CheckLoginRequestMessage) returns (CheckLoginReplyMessage) {
@@ -22,6 +24,14 @@ service Users {
     };
 }
 
+/*Activate User*/
+message ActivateRequest {
+    string id = 1;
+    string status = 2;
+}
+message ActivateReply {
+    bool status = 1;
+}
 
 /*Remove User*/
 message RemoveRequest {

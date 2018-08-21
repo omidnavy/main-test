@@ -23,9 +23,15 @@ module.exports = class UserController extends BaseController {
     }
 
     async activation(req, res) {
-        // if (req.session.userInfo.role === 'administrator' || ) to do tomorrow : check if user is same as requested
-        let response = await this.user.remove(req.params.id);
-        if (response.status) return res.send('user deleted successfully');
+        if ( req.session.userInfo.Role !== 'administrator' &&
+            (
+                req.params.id !== req.session.userInfo._id ||
+                req.session.userInfo.Status > 1 ||
+                req.body.status > 1
+            )
+        ) return res.status(401).send('You don\'t have access');
+        let response = await this.user.activate(req.params.id,req.body.status);
+        if (response.status) return res.send('successful');
         else {
             if (response.error === 'user not found') return res.status(404).send(response.error);
             else res.status(400).send(response.error)
@@ -41,7 +47,6 @@ module.exports = class UserController extends BaseController {
         }
     }
 
-
     async getInfo(req, res) {
         let response = await this.user.getInfo(req.params.id);
         if (response.status) return res.send(response.data);
@@ -52,8 +57,8 @@ module.exports = class UserController extends BaseController {
     }
 
     async changeForgetPassword(req, res) {
-        if (!req.session.forgetId) return res.status(404).send("Can not find your request, please try again.");
-        if (!req.body.token) return res.status(400).send("Token must provide");
+        if (!req.session.forgetId) return res.status(404).send('Can not find your request, please try again.');
+        if (!req.body.token) return res.status(400).send('Token must provide');
         if (!this.isValidPassword(req.body.password)) return res.status(400).send('new-password');
         let rs = await this.user.changeForgetPassword(req.session.forgetId, req.body.token, req.body.password);
         if (rs.status) {
@@ -66,12 +71,12 @@ module.exports = class UserController extends BaseController {
     async requestForgetPassword(req, res) {
         let rs = await this.user.requestForgetPassword(req.query.mode, req.query.value);
         if (rs.status) {
-            Sender.SendSMS({to: [rs.phone], text: `${CommonMessages["forget-password"]["sms"]} ${rs.token}`});
+            Sender.SendSMS({to: [rs.phone], text: `${CommonMessages['forget-password']['sms']} ${rs.token}`});
             //Save user ID in session as "forgetId"
             req.session.forgetId = rs.id;
             return res.sendStatus(200);
         }
-        else if (rs.error === "not-found") return res.status(404).send("User Not Found");
+        else if (rs.error === 'not-found') return res.status(404).send('User Not Found');
         else return res.status(400).send(rs.error)
     }
 
@@ -81,12 +86,17 @@ module.exports = class UserController extends BaseController {
         let id = req.session.userInfo._id;
         let rs = await this.user.changePassword(id, req.body.old, req.body.new);
         if (rs.status) return res.sendStatus(200);
-        else if (rs.error === "not-found") return res.status(404).send("User Not Found");
+        else if (rs.error === 'not-found') return res.status(404).send('User Not Found');
         else return res.status(400).send(rs.error)
     }
 
     async edit(req, res) {
         let id = req.session.userInfo._id;
+        //
+        //
+        if (req.session.userInfo.Role !== 'administrator') delete req.body.Role;
+        //
+        //
         let rs = await this.user.edit(req.params.type, id, JSON.stringify(req.body));
         if (rs.status) return res.sendStatus(200);
         else return res.status(400).send(rs.error)
@@ -101,11 +111,11 @@ module.exports = class UserController extends BaseController {
         if (rs.status) {
             Sender.SendSMS({
                 to: [req.body.Phone],
-                text: `${req.body.Firstname} ${Messages[req.params.type]["register-success"]["sms"]}`
+                text: `${req.body.Firstname} ${Messages[req.params.type]['register-success']['sms']}`
             });
             return res.sendStatus(201);
         }
-        else if (rs.error === "phone exists") return res.status(406).send("Phone exists in our system");
+        else if (rs.error === 'phone exists') return res.status(406).send('Phone exists in our system');
         else return res.status(400).send(rs.error)
     }
 
