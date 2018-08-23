@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./app/index.js",
+    "start:watch": "nodemon ./app/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Shailendra Singh <shailendra.singh.knp@gmail.com>",
+  "author": "Omid Navy <me@omid.navy>",
   "license": "ISC",
   "dependencies": {
     "@grpc/proto-loader": "^0.3.0",
