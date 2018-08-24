@@ -5,7 +5,7 @@ const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const salt = '$om3T!ngStR0nG';
 const RouteDictionary = require('./RouteDictionary');
-
+const config = require('./config/database').home;
 module.exports = class Middleware {
     constructor(app, express) {
         this.app = app;
@@ -23,7 +23,7 @@ module.exports = class Middleware {
 
 
         this.app.use(session({
-            store: new RedisStore({host: '192.168.0.7'}),
+            store: new RedisStore({host: config.host}),
             secret: salt,
             cookie: {maxAge: 2628000000},
             saveUninitialized: true,
@@ -32,7 +32,7 @@ module.exports = class Middleware {
 
         this.app.use((req, res, next) => {
             let role = 0;
-            if (req.session.isAuthenticate) {
+            if (req.session && req.session.isAuthenticate) {
                 if (req.session.userInfo.Status === 0) return res.redirect('/active');
                 if (req.session.userInfo.Status > 1) return res.status(401).send('You don\'t have access');
                 role = req.session.userInfo.Role;

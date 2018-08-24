@@ -1,20 +1,8 @@
 {
-  "development": {
-    "user": "sa",
-    "password": "123@abc",
-    "database": "dev",
-    "host": "192.168.0.242"
-  },
-  "test": {
-    "user": "root",
-    "password": null,
-    "database": "database_test",
+  "home": {
     "host": "127.0.0.1"
   },
-  "production": {
-    "user": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1"
+  "work": {
+    "host": "192.168.0.7"
   }
 }
