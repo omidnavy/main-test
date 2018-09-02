@@ -3,6 +3,8 @@ const http = require('http');
 const RouteMapper = require('./core/RouteMapper');
 const Middleware = require('./core/Middleware');
 const path = require('path');
+const argv = require('minimist')(process.argv.slice(2));
+const port = argv.port || '8080';
 require('./helpers/helpers.js');
 
 let app = express();
@@ -33,8 +35,8 @@ app.use((req, res, next) => {
     });
 });
 
-server.listen(8080);
-console.log('Server started on localhost:8080\n');
+server.listen(port);
+console.log(`Server started on localhost:${port}\n`);
 process.on('uncaughtException', function (err) {
     console.log(err);
 });

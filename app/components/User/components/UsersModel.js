@@ -1,11 +1,6 @@
 const BaseModel = require('../../../core/BaseModel');
 const UsersGateway = require('../../../gateway/Users/Users');
 const usersGateway = new UsersGateway;
-
-const path = require('path');
-const fs = require('fs');
-const uploadPath = path.join(__dirname, '../../../../uploads');
-
 module.exports = class ClientModel extends BaseModel {
 
     constructor() {
@@ -33,6 +28,7 @@ module.exports = class ClientModel extends BaseModel {
             })
         })
     }
+
     /**
      *
      * @param {string} id

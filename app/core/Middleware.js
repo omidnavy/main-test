@@ -5,7 +5,9 @@ const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const salt = '$om3T!ngStR0nG';
 const RouteDictionary = require('./RouteDictionary');
-const config = require('./config/database').home;
+const argv = require('minimist')(process.argv.slice(2));
+const env = argv.enviroment || 'home';
+const config = require('./config/database')[env];
 module.exports = class Middleware {
     constructor(app, express) {
         this.app = app;
