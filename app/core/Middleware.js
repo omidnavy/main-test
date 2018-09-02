@@ -38,7 +38,6 @@ module.exports = class Middleware {
                 if (req.session.userInfo.Status === 0) return res.redirect('/active');
                 if (req.session.userInfo.Status > 1) return res.status(401).send('You don\'t have access');
                 role = req.session.userInfo.Role;
-                console.log(req.session.userInfo)
             }
             let placeInDictionary = `${req.path}/${req.method}`.replace('/', '').split('/');
             let privilege = RouteDictionary;

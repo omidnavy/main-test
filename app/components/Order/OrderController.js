@@ -6,6 +6,10 @@ const multiparty = require('multiparty')
     , request = require('request-promise-native')
     , fs = require('fs')
     , util = require('util');
+
+const argv = require('minimist')(process.argv.slice(2));
+const fileServerPort = argv.fsp || '4000';
+
 module.exports = class OrderController extends BaseController {
 
     constructor(router, basePath) {
@@ -16,20 +20,21 @@ module.exports = class OrderController extends BaseController {
     }
 
     registerRoutes() {
+        this.router.delete('/:id', this.remove.bind(this));
         this.router.post('/:type/new', this.upload.bind(this));
         this.router.get('/:id', this.getInfo.bind(this));
-        this.router.post('/upload/:id', this.upload.bind(this));
     }
 
-    async submit(req, res) {
-        let rs = await this.order.submit(req.session.userInfo._id, req.params.type, req.body);
-        if (rs.status) res.status(201).send(rs.data);
-        else return res.status(400).send(rs.error)
+    async remove(req,res){
+        let response = await this.order.remove(req.session.userInfo._id, req.params.id);
+        if (response.status === true) res.sendStatus(200);
+        else res.sendStatus(400)
     }
-
     async upload(req, res) {
         let form = new multiparty.Form();
         form.parse(req, async function (err, fields, files) {
+            if (!req.session || !req.session.isAuthenticate) return res.status(400).send('bad request.');
+            // else if (fields.ID) id = fields.ID; user will have req.session , do works on frontend
             let rs = await this.order.submit(req.session.userInfo._id, req.params.type, fields);
             if (rs.status) {
                 let error = false;
@@ -42,7 +47,7 @@ module.exports = class OrderController extends BaseController {
                     };
                     // Post the file to the upload server
                     if (await request.post({
-                        url: `http://localhost:4000/upload/${req.session.userInfo._id}/${rs.data}`,
+                        url: `http://localhost:${fileServerPort}/upload/${req.session.userInfo._id}/${rs.data}`,
                         formData: formData
                     }) !== 'success') {
                         error = true;

@@ -27,7 +27,6 @@ SendSms = function (args, username = 'cafetarjome', password = 'Cafe!1operator')
         });
         res.on("end", function () {
             let body = Buffer.concat(chunks);
-            console.log(body.toString());
         });
     });
     req.write(qs.stringify({

@@ -18,8 +18,7 @@ let middleware = new Middleware(app, express);
 /**
  * ROUTES
  ********************* */
-let routes = new RouteMapper();
-routes.mapControllers(app);
+new RouteMapper(app);
 
 /**
  * Default Routes
@@ -38,5 +37,5 @@ app.use((req, res, next) => {
 server.listen(port);
 console.log(`Server started on localhost:${port}\n`);
 process.on('uncaughtException', function (err) {
-    console.log(err);
+    logger(err);
 });
